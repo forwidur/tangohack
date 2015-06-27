@@ -15,6 +15,7 @@
  */
 
 package com.projecttango.experiments.javapointcloud;
+import com.projecttango.tangoutils.renderables.PointCloud;
 
 import com.google.atap.tangoservice.Tango;
 import com.google.atap.tangoservice.Tango.OnTangoUpdateListener;
@@ -43,9 +44,12 @@ import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.FloatBuffer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import static java.lang.System.out;
+import java.nio.FloatBuffer;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Main Activity class for the Point Cloud Sample. Handles the connection to the {@link Tango}
@@ -74,10 +78,14 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     private TextView mAverageZTextView;
     private TextView mFrequencyTextView;
 
+    private Button mExportButton;
+    private Button mPrintButton;
     private Button mFirstPersonButton;
     private Button mThirdPersonButton;
     private Button mTopDownButton;
 
+    private boolean exportOnNext;
+    private String pointString;
     private int count;
     private int mPreviousPoseStatus;
     private int mPointCount;
@@ -92,7 +100,11 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     private static final int UPDATE_INTERVAL_MS = 100;
     public static Object poseLock = new Object();
     public static Object depthLock = new Object();
-//    private static FloatBuffer myXyzIj = new FloatBuffer(1000000);
+
+    public PointCloudActivity() {
+        this.exportOnNext = false;
+        pointString = "";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +124,10 @@ public class PointCloudActivity extends Activity implements OnClickListener {
         mAverageZTextView = (TextView) findViewById(R.id.averageZ);
         mFrequencyTextView = (TextView) findViewById(R.id.frameDelta);
 
+        mPrintButton = (Button) findViewById(R.id.print_button);
+        mPrintButton.setOnClickListener(this);
+        mExportButton = (Button) findViewById(R.id.export_button);
+        mExportButton.setOnClickListener(this);
         mFirstPersonButton = (Button) findViewById(R.id.first_person_button);
         mFirstPersonButton.setOnClickListener(this);
         mThirdPersonButton = (Button) findViewById(R.id.third_person_button);
@@ -123,7 +139,7 @@ public class PointCloudActivity extends Activity implements OnClickListener {
         mConfig = mTango.getConfig(TangoConfig.CONFIG_TYPE_CURRENT);
         mConfig.putBoolean(TangoConfig.KEY_BOOLEAN_DEPTH, true);
 
-        int maxDepthPoints = 1000000; // mConfig.getInt("max_point_cloud_elements");
+        int maxDepthPoints = mConfig.getInt("max_point_cloud_elements");
         mRenderer = new PCRenderer(maxDepthPoints);
         mGLView = (GLSurfaceView) findViewById(R.id.gl_surface_view);
         mGLView.setEGLContextClientVersion(2);
@@ -207,6 +223,13 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+        case R.id.print_button: {
+            Log.w("tangohack", this.pointString);
+            break;
+        }
+        case R.id.export_button:
+            this.exportOnNext = true;
+            break;
         case R.id.first_person_button:
             mRenderer.setFirstPersonView();
             break;
@@ -306,9 +329,20 @@ public class PointCloudActivity extends Activity implements OnClickListener {
                         if(!mRenderer.isValid()){
                             return;
                         }
-                        mRenderer.getPointCloud().UpdatePoints(xyzIj.xyz, xyzIj.xyzCount);
+                        mRenderer.getPointCloud().UpdatePoints(xyzIj.xyz);
+
+                        // User requested an export of the point data
+                        if (exportOnNext) {
+                            exportOnNext = false;
+                            FloatBuffer fb = xyzIj.xyz;
+
+                            String result = FluxPointCloud.bufferToString(fb);
+
+                            pointString += result;
+                        }
+
                         mRenderer.getModelMatCalculator().updatePointCloudModelMatrix(
-                                        pointCloudPose.getTranslationAsFloats(),
+                                pointCloudPose.getTranslationAsFloats(),
                                         pointCloudPose.getRotationAsFloats());
                         mRenderer.getPointCloud().setModelMatrix(
                                 mRenderer.getModelMatCalculator().getPointCloudModelMatrixCopy());

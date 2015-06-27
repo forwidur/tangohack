@@ -27,6 +27,7 @@ import com.projecttango.tangoutils.Renderer;
 import com.projecttango.tangoutils.renderables.CameraFrustum;
 import com.projecttango.tangoutils.renderables.CameraFrustumAndAxis;
 import com.projecttango.tangoutils.renderables.Grid;
+import com.projecttango.tangoutils.renderables.PointCloud;
 
 /**
  * OpenGL rendering class for the Motion Tracking API sample. This class managers the objects
