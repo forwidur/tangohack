@@ -15,13 +15,8 @@ public class Client {
     private static final String key = "40fd2eab8722dddc346e8d5e47f04b9d";
     private static final String projectsUrl = "https://polson.flux.io/p/aroJ3KnpdK8rrYkJO/api/"
             + "value/key/v/" + key;
-    private static final String auth_ = "auth=MTQzNTQ0ODQ5N3xfN09yNngxRFJRSVNHejF5ZDI0TDF2NXo0XzdJc"
-            + "kxlV3dLT3huMXAtTVhHdlpFekNraDFTakFfMmxjUWRUalJNSk04RFc5TWEzX0kxTkhrUlp3WEt0SE9NZ0gya"
-            + "kY2dkJDQy15ZDlsY0QySzZqbUlVRTJ4Wmd6alFQdEVmRlBFMHUzd1NUTXJlY1ZVckM5dkVxTzJ6MlUtMUpWb"
-            + "2pVN0lFUzk1emVBTDFnRXNQV1NwRnZqUmpfN1h2OU9iWGhLSWJ4VXMwdHQ2dXJSQUdFVlZiUm5ydWduMXFJc"
-            + "GR0dl80SURPTENPODhLd2J6YUtZMldBcmRhN2RZUkNnWmx3YXNBSjRzWWdnWmw2N0ViZ1p2Nko3blRTTE51S"
-            + "kJXMzBKSXVyQmRTWnlZc091TVU0azhKUmFnLUU1RklyYm9vUWNqeUNjN2szeWFwaTI0VnVDSmNibjBzdlJqc"
-            + "W1uM2F8QerFYL-vXba0gpnDZU2dO0YEu3pW_3pJ7U66buCmZZA=;";
+    private static final String auth_ =
+            "auth=MTQzNTUxMDYxMnxuUm9ZVzcxaGdtdVZsOEFNUG5DS2lJaWhDaVZLUUlQRE9RR3ZoNXNHWXY4UEQxYmtuQ0p6WXFJUk1tQmpHSjdLRmRGT2FDeUtxMTM4VVNhekhETlN0OERCb29GTXoyaE1zWFhOVXVVUVBTYlIxR3gyVjFYMC1MUUF2TFRSOTUtR3V5UmdZRGVtTDN3Mk5KM1E4cmNSNnYxNUdVakpmdU42U09VdXZpaDZjaHozWkNJaTltaFRTTnN4SXo1TEFmUFhoT2d6Z0xqcURCVjIwTHcwdVM1dThBYzFvR0ttbV9uSlRfeGhPXzJVSHUxcmJsOE4zOVFQQnhQV1JoVk9FZDIyLUc1SXp1YWw4aFFOOFlMekg1Wk03d0IzTV92UXBtdVIzakhaRW9zRE9OQ2h0X255TnhrTjQzOGMzUHpDVmYwSGU3cWJINzY5alV3WDRuTWlnOXRKczFycURMVUx8Eqrf8fht4fUhDT9qFWT9DWcoQTmZGfk0X1bSJf9TSnk=; Path=/;";
     private static final String meta_ =
             "eyJhZ2VudCI6eyJwcm9ncmFtIjoiZ3Jhc3Nob3BwZXIiLCJwcm9ncmFtVmVyc2lvbiI6IllXNTVJQ3NnYjJ4a0lDWWdaR0YwWVE9PSIsInBsdWdpblZlcnNpb24iOiIxLjIuMyIsInBsYXRmb3JtIjoib3N4LzEwLjkifSwic291cmNlIjp7Im1haW5GaWxlIjoiVGFuZ28ifX0=";
     private static URL url_;
