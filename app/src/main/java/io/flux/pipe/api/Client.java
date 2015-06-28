@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Client {
-    private static final String key = "40cf35e505c3868d1215a87de246da42";
+    private static final String key = "40fd2eab8722dddc346e8d5e47f04b9d";
     private static final String projectsUrl = "https://polson.flux.io/p/aroJ3KnpdK8rrYkJO/api/"
             + "value/key/v/" + key;
     private static final String auth_ = "auth=MTQzNTQ0ODQ5N3xfN09yNngxRFJRSVNHejF5ZDI0TDF2NXo0XzdJc"

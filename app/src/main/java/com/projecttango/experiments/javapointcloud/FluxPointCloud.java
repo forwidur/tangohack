@@ -10,7 +10,8 @@ import java.io.PrintWriter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-
+import com.projecttango.tangoutils.Renderer;
+import android.opengl.Matrix;
 
 /**
  * Created by kylegmaxwell on 6/27/15.
@@ -84,8 +85,17 @@ public class FluxPointCloud {
      * @param pointIndex Next available index
      * @return The new next index position
      */
-    public static int bufferAppend(FloatBuffer fb, float[] fa, int pointIndex) {
+    public static int bufferAppend(FloatBuffer fb, float[] fa, int pointIndex, Renderer rndr) {
         int count = 0;
+        float[] vecP = new float[4];
+        vecP[0] = 0;
+        vecP[1] = 0;
+        vecP[2] = 0;
+        vecP[3] = 1;
+        float[] vecX = new float[4];
+
+        float[] xform = rndr.getViewMatrix();
+
         while (fb.hasRemaining() ) {
             float x = fb.get();
             if (!fb.hasRemaining())
@@ -95,6 +105,17 @@ public class FluxPointCloud {
             if (!fb.hasRemaining())
                 break;
             float z = fb.get();
+
+            // Apply view transformation to go from
+            // camera to model space 
+            vecP[0] = x;
+            vecP[1] = y;
+            vecP[2] = z;
+            Matrix.multiplyMV(vecX, 0, xform, 0, vecP, 0);
+            x = vecX[0];
+            y = vecX[1];
+            z = vecX[2];
+
             // scale for easy visualization (hack)
             x *= 30;
             y *= 30;

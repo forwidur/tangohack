@@ -343,7 +343,7 @@ public class PointCloudActivity extends Activity implements OnClickListener {
                             FloatBuffer fb = xyzIj.xyz;
                             // copy elements from buffer into temporary array to accumulate
                             // later the array will be used to convert to string json
-                            pointIndex = FluxPointCloud.bufferAppend(fb, pointArray, 0);
+                            pointIndex = FluxPointCloud.bufferAppend(fb, pointArray, 0, mRenderer);
                             String s = FluxPointCloud.arrayToString(pointArray, pointIndex);
                             queue_.add(s);
                         }
