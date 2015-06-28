@@ -132,8 +132,6 @@ public class PointCloudActivity extends Activity implements OnClickListener {
         mAverageZTextView = (TextView) findViewById(R.id.averageZ);
         mFrequencyTextView = (TextView) findViewById(R.id.frameDelta);
 
-        mPrintButton = (Button) findViewById(R.id.print_button);
-        mPrintButton.setOnClickListener(this);
         mExportButton = (Button) findViewById(R.id.export_button);
         mExportButton.setOnClickListener(this);
         mFirstPersonButton = (Button) findViewById(R.id.first_person_button);
@@ -235,12 +233,6 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.print_button: {
-            String s = FluxPointCloud.arrayToString(pointArray, pointIndex);
-            pointIndex = 0;
-            queue_.add(s);
-            break;
-        }
         case R.id.export_button:
             this.exportOnNext = true;
             break;
@@ -351,7 +343,9 @@ public class PointCloudActivity extends Activity implements OnClickListener {
                             FloatBuffer fb = xyzIj.xyz;
                             // copy elements from buffer into temporary array to accumulate
                             // later the array will be used to convert to string json
-                            pointIndex = FluxPointCloud.bufferAppend(fb, pointArray, pointIndex);
+                            pointIndex = FluxPointCloud.bufferAppend(fb, pointArray, 0);
+                            String s = FluxPointCloud.arrayToString(pointArray, pointIndex);
+                            queue_.add(s);
                         }
 
                         mRenderer.getModelMatCalculator().updatePointCloudModelMatrix(

@@ -210,18 +210,6 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/print_button"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/export_button"
-        android:layout_alignLeft="@+id/export_button"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:paddingRight="5dp"
-        android:text="Print" />
-
-    <Button
         android:id="@+id/export_button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -231,7 +219,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
         android:paddingRight="5dp"
-        android:text="Export" />
+        android:text="To Flux" />
 
     <Button
         android:id="@+id/first_person_button"
