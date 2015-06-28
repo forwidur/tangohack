@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class Client {
     private static final String projectsUrl = "https://polson.flux.io/p/aroJ3KnpdK8rrYkJO/api/"
-            + "value/key/v/40cbd9274bcd75be09695b0ad6694737";
+            + "value/key/v/408666cea264b2b39e07fec8214b6d5c";
     private static final String auth_ = "auth=MTQzNTQ0ODQ5N3xfN09yNngxRFJRSVNHejF5ZDI0TDF2NXo0XzdJc"
             + "kxlV3dLT3huMXAtTVhHdlpFekNraDFTakFfMmxjUWRUalJNSk04RFc5TWEzX0kxTkhrUlp3WEt0SE9NZ0gya"
             + "kY2dkJDQy15ZDlsY0QySzZqbUlVRTJ4Wmd6alFQdEVmRlBFMHUzd1NUTXJlY1ZVckM5dkVxTzJ6MlUtMUpWb"
@@ -44,6 +44,7 @@ public class Client {
             conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
             conn.setDoInput(true);
+            conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Cookie", auth_);
             conn.setRequestProperty("Flux-Meta", meta_);
 
@@ -51,8 +52,8 @@ public class Client {
             os.write(val.getBytes());
             os.flush();
             os.close();
-            InputStream is = conn.getInputStream();
-
+            conn.getInputStream().close();
+/*
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             String result = null;
@@ -63,6 +64,7 @@ public class Client {
             br.close();
 
             Log.e("WHATEV", result);
+            */
             conn.disconnect();
         } catch (IOException e) {
             Log.e("WHATEV", "FAILED: " + e);

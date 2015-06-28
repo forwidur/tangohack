@@ -236,7 +236,9 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.print_button: {
-            Log.w("tangohack", FluxPointCloud.arrayToString(pointArray, pointIndex));
+            String s = FluxPointCloud.arrayToString(pointArray, pointIndex);
+            pointIndex = 0;
+            queue_.add(s);
             break;
         }
         case R.id.export_button:
@@ -420,7 +422,7 @@ public class PointCloudActivity extends Activity implements OnClickListener {
                                     mQuatTextView.setText(quaternionString);
                                     mPoseCountTextView.setText(Integer.toString(count));
                                     mDeltaTextView.setText(threeDec.format(mDeltaTime));
-                                    queue_.add(threeDec.format(mDeltaTime));
+                                    //queue_.add(threeDec.format(mDeltaTime));
                                     if (mPose.statusCode == TangoPoseData.POSE_VALID) {
                                         mPoseStatusTextView.setText(R.string.pose_valid);
                                     } else if (mPose.statusCode == TangoPoseData.POSE_INVALID) {

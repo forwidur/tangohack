@@ -1,5 +1,7 @@
 package com.projecttango.experiments.javapointcloud;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import static java.lang.System.out;
@@ -52,18 +54,27 @@ public class FluxPointCloud {
      * @return JSON string of flux point primitives
      */
     public static String arrayToString(float[] fa, int pointIndex) {
-
-        String result = "[";
+        StringBuilder sb = new StringBuilder("[");
+        boolean first = true;
         for (int i = 0; i < pointIndex; i+=3) {
-            float x = fa[i];
-            float y = fa[i+1];
-            float z = fa[i+2];
-            result += "{ 'point': [";
-            result += x+","+y+","+z;
-            result += "], 'primitive':'point' },";
+            if (first) {
+                first = false;
+            } else {
+                sb.append(",");
+            }
+            sb.append("{\"point\":[");
+            sb.append(fa[i]);
+            sb.append(",");
+            sb.append(fa[i+1]);
+            sb.append(",");
+            sb.append(fa[i+2]);
+            sb.append("], \"primitive\":\"point\"}");
         }
-        result += "]";
-        return result;
+        sb.append("]");
+//        Log.e("WHAAAA", sb.toString());
+
+
+        return sb.toString();
     }
 
     /**
@@ -75,7 +86,7 @@ public class FluxPointCloud {
      */
     public static int bufferAppend(FloatBuffer fb, float[] fa, int pointIndex) {
         int count = 0;
-        while (fb.hasRemaining() && (count < 30) ) {
+        while (fb.hasRemaining() ) {
             float x = fb.get();
             if (!fb.hasRemaining())
                 break;
