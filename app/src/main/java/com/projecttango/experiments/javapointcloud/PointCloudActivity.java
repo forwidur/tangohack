@@ -50,6 +50,9 @@ import static java.lang.System.out;
 import java.nio.FloatBuffer;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import io.flux.pipe.api.Client;
 
 /**
  * Main Activity class for the Point Cloud Sample. Handles the connection to the {@link Tango}
@@ -100,6 +103,9 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     private static final int UPDATE_INTERVAL_MS = 100;
     public static Object poseLock = new Object();
     public static Object depthLock = new Object();
+
+    private static final ConcurrentLinkedQueue<String> queue_ = new ConcurrentLinkedQueue<String>();
+    private static Thread sub_;
 
     public PointCloudActivity() {
         this.exportOnNext = false;
@@ -157,6 +163,10 @@ public class PointCloudActivity extends Activity implements OnClickListener {
         mServiceVersion = mConfig.getString("tango_service_library_version");
         mTangoServiceVersionTextView.setText(mServiceVersion);
         mIsTangoServiceConnected = false;
+
+        sub_ = new Thread(new Submitter<String>(queue_));
+        sub_.start();
+
         startUIThread();
     }
 
@@ -409,6 +419,7 @@ public class PointCloudActivity extends Activity implements OnClickListener {
                                     mQuatTextView.setText(quaternionString);
                                     mPoseCountTextView.setText(Integer.toString(count));
                                     mDeltaTextView.setText(threeDec.format(mDeltaTime));
+                                    queue_.add(threeDec.format(mDeltaTime));
                                     if (mPose.statusCode == TangoPoseData.POSE_VALID) {
                                         mPoseStatusTextView.setText(R.string.pose_valid);
                                     } else if (mPose.statusCode == TangoPoseData.POSE_INVALID) {
