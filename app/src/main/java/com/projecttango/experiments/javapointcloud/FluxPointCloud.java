@@ -100,8 +100,8 @@ public class FluxPointCloud {
             y *= 30;
             z *= 30;
             fa[pointIndex++] = x;
-            fa[pointIndex++] = y;
             fa[pointIndex++] = z;
+            fa[pointIndex++] = -1*y;
             count++;
         }
         fb.rewind();
