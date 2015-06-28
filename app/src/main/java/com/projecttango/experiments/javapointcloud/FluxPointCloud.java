@@ -95,10 +95,6 @@ public class FluxPointCloud {
             if (!fb.hasRemaining())
                 break;
             float z = fb.get();
-            // scale for easy visualization (hack)
-            x *= 30;
-            y *= 30;
-            z *= 30;
             fa[pointIndex++] = x;
             fa[pointIndex++] = y;
             fa[pointIndex++] = z;
