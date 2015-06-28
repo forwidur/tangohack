@@ -1,5 +1,6 @@
 package com.projecttango.experiments.javapointcloud;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import static java.lang.System.out;
 import java.nio.FloatBuffer;
@@ -42,5 +43,57 @@ public class FluxPointCloud {
         }
         fb.rewind();
         return result;
+    }
+
+    /**
+     * Convert the array of floats to a JSON string
+     * @param fa Array of floats x y z
+     * @param pointIndex The next empty index in the array
+     * @return JSON string of flux point primitives
+     */
+    public static String arrayToString(float[] fa, int pointIndex) {
+
+        String result = "[";
+        for (int i = 0; i < pointIndex; i+=3) {
+            float x = fa[i];
+            float y = fa[i+1];
+            float z = fa[i+2];
+            result += "{ 'point': [";
+            result += x+","+y+","+z;
+            result += "], 'primitive':'point' },";
+        }
+        result += "]";
+        return result;
+    }
+
+    /**
+     * Add a chunk of the float buffer to the float array
+     * @param fb Iterable list of x y z
+     * @param fa Array of x y z
+     * @param pointIndex Next available index
+     * @return The new next index position
+     */
+    public static int bufferAppend(FloatBuffer fb, float[] fa, int pointIndex) {
+        int count = 0;
+        while (fb.hasRemaining() && (count < 30) ) {
+            float x = fb.get();
+            if (!fb.hasRemaining())
+                break;
+            float y = fb.get();
+
+            if (!fb.hasRemaining())
+                break;
+            float z = fb.get();
+            // scale for easy visualization (hack)
+            x *= 30;
+            y *= 30;
+            z *= 30;
+            fa[pointIndex++] = x;
+            fa[pointIndex++] = y;
+            fa[pointIndex++] = z;
+            count++;
+        }
+        fb.rewind();
+        return pointIndex;
     }
 }
