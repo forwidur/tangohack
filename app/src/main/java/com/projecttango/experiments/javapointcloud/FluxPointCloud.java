@@ -2,14 +2,7 @@ package com.projecttango.experiments.javapointcloud;
 
 import android.util.Log;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import static java.lang.System.out;
 import java.nio.FloatBuffer;
-import java.io.PrintWriter;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
 
 /**
@@ -47,6 +40,10 @@ public class FluxPointCloud {
         return result;
     }
 
+    private static float conv(float f) {
+        return (float) (Math.round(f * 100) * 0.01);
+    }
+
     /**
      * Convert the array of floats to a JSON string
      * @param fa Array of floats x y z
@@ -63,16 +60,15 @@ public class FluxPointCloud {
                 sb.append(",");
             }
             sb.append("{\"point\":[");
-            sb.append(fa[i]);
+            sb.append(conv(fa[i]));
             sb.append(",");
-            sb.append(fa[i+1]);
+            sb.append(conv(fa[i+1]));
             sb.append(",");
-            sb.append(fa[i+2]);
+            sb.append(conv(fa[i+2]));
             sb.append("], \"primitive\":\"point\"}");
         }
         sb.append("]");
-//        Log.e("WHAAAA", sb.toString());
-
+//        Log.e("WHAAAA", sb.toString().substring(0, 200));
 
         return sb.toString();
     }
