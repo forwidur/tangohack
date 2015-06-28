@@ -88,7 +88,8 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     private Button mTopDownButton;
 
     private boolean exportOnNext;
-    private String pointString;
+    private float[] pointArray;
+    private int pointIndex;
     private int count;
     private int mPreviousPoseStatus;
     private int mPointCount;
@@ -109,7 +110,8 @@ public class PointCloudActivity extends Activity implements OnClickListener {
 
     public PointCloudActivity() {
         this.exportOnNext = false;
-        pointString = "";
+        pointArray = new float[1000000];
+        pointIndex = 0;
     }
 
     @Override
@@ -234,7 +236,7 @@ public class PointCloudActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.print_button: {
-            Log.w("tangohack", this.pointString);
+            Log.w("tangohack", FluxPointCloud.arrayToString(pointArray, pointIndex));
             break;
         }
         case R.id.export_button:
@@ -345,10 +347,9 @@ public class PointCloudActivity extends Activity implements OnClickListener {
                         if (exportOnNext) {
                             exportOnNext = false;
                             FloatBuffer fb = xyzIj.xyz;
-
-                            String result = FluxPointCloud.bufferToString(fb);
-
-                            pointString += result;
+                            // copy elements from buffer into temporary array to accumulate
+                            // later the array will be used to convert to string json
+                            pointIndex = FluxPointCloud.bufferAppend(fb, pointArray, pointIndex);
                         }
 
                         mRenderer.getModelMatCalculator().updatePointCloudModelMatrix(
