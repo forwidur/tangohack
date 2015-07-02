@@ -82,44 +82,33 @@ public class FluxPointCloud {
      * @return The new next index position
      */
     public static int bufferAppend(FloatBuffer fb, float[] fa, int pointIndex, Renderer rndr) {
-        int count = 0;
-        float[] vecP = new float[4];
+        final float[] vecP = new float[4];
         vecP[0] = 0;
         vecP[1] = 0;
         vecP[2] = 0;
         vecP[3] = 1;
-        float[] vecX = new float[4];
+        final float[] vecX = new float[4];
 
-        float[] xform = rndr.getViewMatrix();
+        final float[] xform = rndr.getViewMatrix();
 
         while (fb.hasRemaining() ) {
-            float x = fb.get();
+            vecP[0] = fb.get();
             if (!fb.hasRemaining())
                 break;
-            float y = fb.get();
+            vecP[1] = fb.get();
 
             if (!fb.hasRemaining())
                 break;
-            float z = fb.get();
+            vecP[2] = fb.get();
 
             // Apply view transformation to go from
             // camera to model space 
-            vecP[0] = x;
-            vecP[1] = y;
-            vecP[2] = z;
             Matrix.multiplyMV(vecX, 0, xform, 0, vecP, 0);
-            x = vecX[0];
-            y = vecX[1];
-            z = vecX[2];
 
-            // scale for easy visualization (hack)
-            x *= 30;
-            y *= 30;
-            z *= 30;
-            fa[pointIndex++] = x;
-            fa[pointIndex++] = z;
-            fa[pointIndex++] = -1*y;
-            count++;
+            // scale by 30 for easy visualization (hack)
+            fa[pointIndex++] = vecX[0] * 30 ;
+            fa[pointIndex++] = vecX[2] * 30;
+            fa[pointIndex++] = -1 * vecX[1] * 30;
         }
         fb.rewind();
         return pointIndex;
